@@ -1,21 +1,91 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SimpleDrumSequencer.Views.SimpleDrumSequencerView">
+             xmlns:localcontrols="clr-namespace:SimpleDrumSequencer.Controls"
+             x:Class="SimpleDrumSequencer.Views.SimpleDrumSequencerView"
+             >
+
+    <ContentPage.Resources>
+        <Style TargetType="localcontrols:ToggleButton">
+            <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+        </Style>
+    </ContentPage.Resources>
 
     <StackLayout>
         <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
             <Label Text="Simple Drum Sequencer!" HorizontalTextAlignment="Center" TextColor="White" FontSize="18"/>
         </Frame>
-        <StackLayout Orientation="Horizontal">
-            <Button/>
-            <Button/>
-            <Button/>
-            <Button/>
-            <Button/>
-            <Button/>
-            <Button/>
-        </StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+            <Button Padding="5" Grid.Row="0" Grid.Column="0" Text="Start"></Button>
+            <Button Padding="5" Grid.Row="0" Grid.Column="1" Text="Stop"></Button>
+            <Button Padding="5" Grid.Row="0" Grid.Column="3" Text="Randomize" Command="{Binding RandomizeCommand}"></Button>
+        </Grid>
+        <CollectionView ItemsSource="{Binding SequenceLanes}">
+            <CollectionView.ItemTemplate 
+                ItemSizingStrategy="MeasureAllItems">
+                <DataTemplate>
+                    <Grid RowSpacing="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+                        <Label 
+                            Grid.Row="0" Grid.Column="0" 
+                            Margin="5,0,0,0"
+                            Text="{Binding Instrument}"
+                            />
+                        <CollectionView Grid.Row="0" Grid.Column="1"
+                                        HeightRequest="40" 
+                                        ItemSizingStrategy="MeasureAllItems"
+                                        ItemsSource="{Binding SequenceSteps}">
+                            <CollectionView.ItemsLayout>
+                                <GridItemsLayout
+                                    Orientation="Horizontal" 
+                                    />
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <localcontrols:ToggleButton IsToggled="{Binding On}">
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup Name="ToggleStates">
+                                                <VisualState Name="ToggledOff">
+                                                    <VisualState.Setters>
+                                                        <Setter Property="Text" Value="Off" />
+                                                        <Setter Property="BackgroundColor" Value="Color.Gray" />
+                                                        <Setter Property="TextColor" Value="Color.Black" />
+                                                    </VisualState.Setters>
+                                                </VisualState>
+
+                                                <VisualState Name="ToggledOn">
+                                                    <VisualState.Setters>
+                                                        <Setter Property="Text" Value=" On" />
+                                                        <Setter Property="BackgroundColor" Value="Color.DarkOrange" />
+                                                        <Setter Property="TextColor" Value="Color.Black" />
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                    </localcontrols:ToggleButton>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </StackLayout>
 </ContentPage>
 

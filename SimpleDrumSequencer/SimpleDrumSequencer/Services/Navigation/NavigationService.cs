@@ -24,7 +24,7 @@ namespace SimpleDrumSequencer.Services.Navigation
 			var viewModel = Activator.CreateInstance(viewModelType) as ViewModelBase;
 
 			page.BindingContext = viewModel;
-
+			
 			if (Application.Current.MainPage is null)
 				Application.Current.MainPage = new NavigationPage(page);
 			else
