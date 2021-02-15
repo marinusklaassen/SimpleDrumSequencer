@@ -58,11 +58,20 @@ namespace SimpleDrumSequencer.ViewModels
 
         protected List<string> Instruments = new List<string> { "Bass drum", "Snare drum", "Hihat", "Cymbal", "High tom", "Mid tom", "Low tom" };
 
+        bool isRunning = false;
+        public bool IsRunning
+        {
+            get { return isRunning; }
+            set { SetProperty(ref isRunning, value); }
+        }
+
         public ObservableCollection<SequenceLane> SequenceLanes { get; set; } = new ObservableCollection<SequenceLane>();
 
         public SimpleDrumSequencerViewModel()
         {
             RandomizeCommand = new Command(OnRandomizeCommand);
+            StartCommand = new Command(OnStartCommand);
+            StopCommand = new Command(OnStopCommand);
 
             foreach (var instrument in Instruments)
             {
@@ -86,6 +95,18 @@ namespace SimpleDrumSequencer.ViewModels
             }
         }
 
+        public void OnStartCommand()
+        {
+            IsRunning = true;
+        }
+
+        public void OnStopCommand()
+        {
+            IsRunning = false;
+        }
+
         public ICommand RandomizeCommand { get; }
+        public ICommand StartCommand { get; }
+        public ICommand StopCommand { get; }
     }
 }

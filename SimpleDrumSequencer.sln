@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDrumSequencer.UWP", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDrumSequencer.Android", "SimpleDrumSequencer\SimpleDrumSequencer.Android\SimpleDrumSequencer.Android.csproj", "{4EDB8CCB-BCCB-4C4A-A1CA-22B7BC957E67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDrumSequencer", "SimpleDrumSequencer\SimpleDrumSequencer\SimpleDrumSequencer.csproj", "{ADCD31F5-9B11-4DCF-B93E-4C478785D752}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleDrumSequencer", "SimpleDrumSequencer\SimpleDrumSequencer\SimpleDrumSequencer.csproj", "{ADCD31F5-9B11-4DCF-B93E-4C478785D752}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

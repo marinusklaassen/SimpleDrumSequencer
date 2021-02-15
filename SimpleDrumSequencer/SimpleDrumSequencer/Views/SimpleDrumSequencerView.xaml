@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:localcontrols="clr-namespace:SimpleDrumSequencer.Controls"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Class="SimpleDrumSequencer.Views.SimpleDrumSequencerView"
              >
 
@@ -14,7 +15,7 @@
 
     <StackLayout>
         <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
-            <Label Text="Simple Drum Sequencer!" HorizontalTextAlignment="Center" TextColor="White" FontSize="18"/>
+            <Label Text="{Binding IsRunning, StringFormat='Simple Drum Sequencer (Running: {0:F2})'}" HorizontalTextAlignment="Center" TextColor="White" FontSize="18"/>
         </Frame>
         <Grid>
             <Grid.RowDefinitions>
@@ -26,14 +27,14 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-            <Button Padding="5" Grid.Row="0" Grid.Column="0" Text="Start"></Button>
-            <Button Padding="5" Grid.Row="0" Grid.Column="1" Text="Stop"></Button>
+            <Button Padding="5" Grid.Row="0" Grid.Column="0" Text="Play" Command="{Binding StartCommand}"/>
+            <Button Padding="5" Grid.Row="0" Grid.Column="1" Text="Stop" Command="{Binding StopCommand}"/>
             <Button Padding="5" Grid.Row="0" Grid.Column="3" Text="Randomize" Command="{Binding RandomizeCommand}"></Button>
         </Grid>
         <CollectionView ItemsSource="{Binding SequenceLanes}">
             <CollectionView.ItemTemplate 
                 ItemSizingStrategy="MeasureAllItems">
-                <DataTemplate>
+                <DataTemplate> 
                     <Grid RowSpacing="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
