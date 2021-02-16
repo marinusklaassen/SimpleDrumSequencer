@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Xamarin.Forms;
 
 namespace SimpleDrumSequencer.Controls
 {
+
     public class ToggleButton : Button
     {
         public event EventHandler<ToggledEventArgs> Toggled;
@@ -23,7 +22,7 @@ namespace SimpleDrumSequencer.Controls
             set { SetValue(IsToggledProperty, value); }
             get { return (bool)GetValue(IsToggledProperty); }
         }
-        
+
         protected override void OnParentSet()
         {
             base.OnParentSet();

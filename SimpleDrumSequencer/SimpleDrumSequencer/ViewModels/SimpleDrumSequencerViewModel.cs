@@ -65,6 +65,13 @@ namespace SimpleDrumSequencer.ViewModels
             set { SetProperty(ref isRunning, value); }
         }
 
+        string lastPlayedInstrument = String.Empty;
+        public string LastPlayedInstrument
+        {
+            get { return lastPlayedInstrument; }
+            set { SetProperty(ref lastPlayedInstrument, value); }
+        }
+
         public ObservableCollection<SequenceLane> SequenceLanes { get; set; } = new ObservableCollection<SequenceLane>();
 
         public SimpleDrumSequencerViewModel()
@@ -72,6 +79,7 @@ namespace SimpleDrumSequencer.ViewModels
             RandomizeCommand = new Command(OnRandomizeCommand);
             StartCommand = new Command(OnStartCommand);
             StopCommand = new Command(OnStopCommand);
+            PlaySoundCommand = new Command<SequenceLane>(OnPlaySoundCommand);
 
             foreach (var instrument in Instruments)
             {
@@ -105,8 +113,15 @@ namespace SimpleDrumSequencer.ViewModels
             IsRunning = false;
         }
 
+        public void OnPlaySoundCommand(SequenceLane sequenceLane)
+        {
+            LastPlayedInstrument = sequenceLane.Instrument;
+        }
+
         public ICommand RandomizeCommand { get; }
         public ICommand StartCommand { get; }
         public ICommand StopCommand { get; }
+        public ICommand PlaySoundCommand { get; }
     }
 }
+
