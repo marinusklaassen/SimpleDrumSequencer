@@ -12,38 +12,34 @@
             <Setter Property="VerticalOptions" Value="CenterAndExpand" />
             <Setter Property="HorizontalOptions" Value="Center" />
         </Style>
-    
     </ContentPage.Resources>
 
     <StackLayout>
         <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
             <StackLayout Orientation="Horizontal">
-            <Label Text="{Binding IsRunning, StringFormat='Simple Drum Sequencer (Running: {0:F2})'}" HorizontalTextAlignment="Center" TextColor="White" FontSize="18"/>
-            <Label Text="{Binding LastPlayedInstrument, StringFormat=', Last played instrument: {0}'}" HorizontalTextAlignment="Center" TextColor="White" FontSize="18" />
+                <Label Text="{Binding IsRunning, StringFormat='Simple Drum Sequencer (Running: {0:F2})'}" HorizontalTextAlignment="Center" TextColor="White" FontSize="18"/>
+                <Label Text="{Binding LastPlayedInstrument, StringFormat=', Last played instrument: {0}'}" HorizontalTextAlignment="Center" TextColor="White" FontSize="18" />
             </StackLayout>
         </Frame>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
             <Button Padding="5" Margin="5,0,0,0" Grid.Row="0" Grid.Column="0" Text="Play" Command="{Binding StartCommand}"/>
             <Button Padding="5" Grid.Row="0" Grid.Column="1" Text="Stop" Command="{Binding StopCommand}"/>
             <Button Padding="5" Grid.Row="0" Grid.Column="2" Text="Randomize" Command="{Binding RandomizeCommand}"></Button>
         </Grid>
-        <CollectionView ItemsSource="{Binding SequenceLanes}">
-            <!-- Gebruik een data grid. Column 1 is instrunemnts steps. Column 2 is steps. Size auto op alles. -->
-                        
-            <CollectionView.ItemTemplate 
-                ItemSizingStrategy="MeasureAllItems">
-                <DataTemplate> 
+        <StackLayout BindableLayout.ItemsSource="{Binding SequenceLanes}">
+            <BindableLayout.ItemTemplate>
+                <DataTemplate>
                     <Grid RowSpacing="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*" />
@@ -56,52 +52,41 @@
                             Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SimpleDrumSequencerViewModel}}, Path=PlaySoundCommand}"
                             CommandParameter="{Binding}"
                             />
-                        <CollectionView Grid.Row="0" Grid.Column="1"
-                                        HeightRequest="50" 
-                                        ItemsSource="{Binding SequenceSteps}"
-                                       
-                                        >
-                            <CollectionView.ItemsLayout>
-                                <GridItemsLayout
-                                    Orientation="Horizontal" 
-                                    />
-                            </CollectionView.ItemsLayout>
-                            <CollectionView.ItemTemplate>
+                        <StackLayout 
+                            Orientation="Horizontal"    
+                            Grid.Row="0" Grid.Column="1" 
+                            BindableLayout.ItemsSource="{Binding SequenceSteps}"
+                            >
+                            <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                           
-                                    <!--
-                                    <Button/>
-                                    -->
-                 
-                                        <localcontrols:ToggleButton IsToggled="{Binding On}">
-                                            <VisualStateManager.VisualStateGroups>
-                                                <VisualStateGroup Name="ToggleStates">
-                                                    <VisualState Name="ToggledOff">
-                                                        <VisualState.Setters>
-                                                            <Setter Property="Text" Value="Off" />
-                                                            <Setter Property="BackgroundColor" Value="Color.Gray" />
-                                                            <Setter Property="TextColor" Value="Color.Black" />
-                                                        </VisualState.Setters>
-                                                    </VisualState>
+                                    <localcontrols:ToggleButton IsToggled="{Binding On}" WidthRequest="50">
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup Name="ToggleStates">
+                                                <VisualState Name="ToggledOff">
+                                                    <VisualState.Setters>
+                                                        <Setter Property="Text" Value="Off" />
+                                                        <Setter Property="BackgroundColor" Value="Color.Gray" />
+                                                        <Setter Property="TextColor" Value="Color.Black" />
+                                                    </VisualState.Setters>
+                                                </VisualState>
 
-                                                    <VisualState Name="ToggledOn">
-                                                        <VisualState.Setters>
-                                                            <Setter Property="Text" Value=" On" />
-                                                            <Setter Property="BackgroundColor" Value="Color.DarkOrange" />
-                                                            <Setter Property="TextColor" Value="Color.Black" />
-                                                        </VisualState.Setters>
-                                                    </VisualState>
-                                                </VisualStateGroup>
-                                            </VisualStateManager.VisualStateGroups>
-                                        </localcontrols:ToggleButton>
-                           
+                                                <VisualState Name="ToggledOn">
+                                                    <VisualState.Setters>
+                                                        <Setter Property="Text" Value=" On" />
+                                                        <Setter Property="BackgroundColor" Value="Color.DarkOrange" />
+                                                        <Setter Property="TextColor" Value="Color.Black" />
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                    </localcontrols:ToggleButton>
                                 </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
                     </Grid>
                 </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+            </BindableLayout.ItemTemplate>
+        </StackLayout>
     </StackLayout>
 </ContentPage>
 
