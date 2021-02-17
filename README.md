@@ -1,3 +1,3 @@
 # Simple Drum Sequencer 
 
-Experimentations building cross-platform (mobile) apps. 
+Experimentations and fun while building cross-platform apps. 
