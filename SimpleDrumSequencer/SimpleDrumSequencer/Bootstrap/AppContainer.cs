@@ -8,6 +8,8 @@ using SimpleDrumSequencer.Services.Navigation;
 using SimpleDrumSequencer.Constracts.Navigation;
 using Xamarin.Forms;
 using SimpleDrumSequencer.Views;
+using SimpleDrumSequencer.Services;
+using Autofac.Core;
 
 namespace SimpleDrumSequencer.Bootstrap
 {
@@ -19,6 +21,7 @@ namespace SimpleDrumSequencer.Bootstrap
         {
             var builder = new ContainerBuilder();
 
+            LoadServices(builder);
             LoadViewModels(builder);
             LoadViews(builder);
 
@@ -27,10 +30,19 @@ namespace SimpleDrumSequencer.Bootstrap
             _container = builder.Build();
         }
 
+        private static void LoadServices(ContainerBuilder builder)
+        {
+            builder.RegisterType<SimpleDrumSequencerService>().As<ISimpleDrumSequencerService>().SingleInstance();
+        }
+
         private static void LoadViewModels(ContainerBuilder builder)
         {
             builder.RegisterType<ViewModelBase>();
-            builder.RegisterType<SimpleDrumSequencerViewModel>();
+            builder.RegisterType<SimpleDrumSequencerViewModel>()
+               .WithParameter(
+                new ResolvedParameter(
+                  (pi, ctx) => pi.ParameterType == typeof(ISimpleDrumSequencerService),
+                  (pi, ctx) => ctx.Resolve<ISimpleDrumSequencerService>()));
         }
 
         private static void LoadViews(ContainerBuilder builder)

@@ -1,4 +1,6 @@
-﻿using Plugin.SimpleAudioPlayer;
+﻿using SimpleDrumSequencer.Models;
+using SimpleDrumSequencer.Services;
+using SimpleDrumSequencer.Utility;
 using SimpleDrumSequencer.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -12,66 +14,9 @@ using Xamarin.Forms;
 
 namespace SimpleDrumSequencer.ViewModels
 {
-    public class SequenceLane : ViewModelBase
-    {
-        public ObservableCollection<SequenceStep> SequenceSteps { get; set; } = new ObservableCollection<SequenceStep>();
-
-        string instrument = String.Empty;
-        public string Instrument
-        {
-            get { return instrument; }
-            set { SetProperty(ref instrument, value); }
-        }
-
-        int numberOfSteps;
-        public int NumberOfSteps
-        {
-            get { return numberOfSteps; }
-            set
-            {
-                SequenceSteps.Clear();
-                foreach (var position in Enumerable.Range(0, value))
-                {
-                    SequenceSteps.Add(new SequenceStep { Position = position });
-                }
-                SetProperty(ref numberOfSteps, value);
-            }
-        }
-    }
-
-    public class SequenceStep : ViewModelBase
-    {
-        bool on = false;
-        public bool On
-        {
-            get { return on; }
-            set { SetProperty(ref on, value); }
-        }
-        int position = 0;
-        public int Position
-        {
-            get { return position; }
-            set { SetProperty(ref position, value); }
-        }
-    }
-
     public class SimpleDrumSequencerViewModel : ViewModelBase
     {
-        
-        Stream GetStreamFromFile(string filename)
-        {
-            var assembly = typeof(App).GetTypeInfo().Assembly;
-                       var stream = assembly.GetManifestResourceStream("SimpleDrumSequencer." + "Audio.DrumKit.Kick 01.wav");
-
-            return stream;
-        }
-
-        protected ISimpleAudioPlayer AudioPlayer = null;
-
-
-        public Random random = new Random();
-
-        protected List<string> Instruments = new List<string> { "Bass drum", "Snare drum", "Hihat", "Cymbal", "High tom", "Mid tom", "Low tom" };
+        public ISimpleDrumSequencerService SimpleDrumSequencerService;
 
         bool isRunning = false;
         public bool IsRunning
@@ -80,71 +25,90 @@ namespace SimpleDrumSequencer.ViewModels
             set { SetProperty(ref isRunning, value); }
         }
 
-        string lastPlayedInstrument = String.Empty;
-        public string LastPlayedInstrument
+        string lastPlayedInstrumentName = String.Empty;
+        public string LastPlayedInstrumentName
         {
-            get { return lastPlayedInstrument; }
-            set { SetProperty(ref lastPlayedInstrument, value); }
+            get { return lastPlayedInstrumentName; }
+            set { SetProperty(ref lastPlayedInstrumentName, value); }
         }
 
-        public ObservableCollection<SequenceLane> SequenceLanes { get; set; } = new ObservableCollection<SequenceLane>();
+        string lastPlayedInstrumentNameShort = String.Empty;
+        public string LastPlayedInstrumentNameShort
+        {
+            get { return lastPlayedInstrumentNameShort; }
+            set { SetProperty(ref lastPlayedInstrumentNameShort, value); }
+        }
+
+        ObservableCollection<SequencerLaneModel> sequencerLanes;
+        public ObservableCollection<SequencerLaneModel> SequencerLanes
+        {
+            get { return sequencerLanes; }
+            set { SetProperty(ref sequencerLanes, value); }
+        }
 
         public SimpleDrumSequencerViewModel()
         {
+            ISimpleDrumSequencerService simpleDrumSequencerService = new SimpleDrumSequencerService(); /* TODO reformat to DI */
             RandomizeCommand = new Command(OnRandomizeCommand);
             StartCommand = new Command(OnStartCommand);
             StopCommand = new Command(OnStopCommand);
-            PlaySoundCommand = new Command<SequenceLane>(OnPlaySoundCommand);
+            PlaySoundCommand = new Command<SequencerLaneModel>(OnPlaySoundCommand);
+            ResetCommand = new Command(OnResetCommand);
+            SimpleDrumSequencerService = simpleDrumSequencerService;
 
+            var currentDrumKitFolder = Assembly.GetCallingAssembly().GetName().Name + ".Audio.DrumKit.";
 
-            var stream = GetStreamFromFile("xxx.mp3");
-            AudioPlayer = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
-            AudioPlayer.Load(stream);
+            SequencerLanes = SimpleDrumSequencerService.SequencerLanes;
 
-
-            foreach (var instrument in Instruments)
-            {
-                SequenceLanes.Add(
-                    new SequenceLane
-                    {
-                        Instrument = instrument,
-                        NumberOfSteps = 16
-                    });
-            }
+            SimpleDrumSequencerService
+            .AddInstrument("Bass Drum 1", "BD1", FileLocator.GetFileStreamFromAssembly(currentDrumKitFolder + "Kick 01.wav"))
+            .AddInstrument("Bass Drum 2", "BD2", FileLocator.GetFileStreamFromAssembly(currentDrumKitFolder + "Kick 02.wav"))
+            .AddInstrument("Snare 1", "SN1", FileLocator.GetFileStreamFromAssembly(currentDrumKitFolder + "Snare 01.wav"))
+            .AddInstrument("Snare 2", "SN2", FileLocator.GetFileStreamFromAssembly(currentDrumKitFolder + "Snare 02.wav"))
+            .AddInstrument("Closed Hat 1", "HH1", FileLocator.GetFileStreamFromAssembly(currentDrumKitFolder + "Closed Hat 01.wav"))
+            .AddInstrument("Closed Hat 2", "HH2", FileLocator.GetFileStreamFromAssembly(currentDrumKitFolder + "Closed Hat 02.wav"))
+            .AddInstrument("Open Hat 2", "OH", FileLocator.GetFileStreamFromAssembly(currentDrumKitFolder + "Open Hat 01.wav"))
+            .AddInstrument("Cymbal", "CB", FileLocator.GetFileStreamFromAssembly(currentDrumKitFolder + "Cymbal 01.wav"))
+            .AddInstrument("Low Tom", "LT", FileLocator.GetFileStreamFromAssembly(currentDrumKitFolder + "Tom 01.wav"))
+            .AddInstrument("Mid Tom", "MT", FileLocator.GetFileStreamFromAssembly(currentDrumKitFolder + "Tom 02.wav"))
+            .AddInstrument("High Tom", "HT", FileLocator.GetFileStreamFromAssembly(currentDrumKitFolder + "Tom 03.wav"))
+            .AddInstrument("Shaker", "SH", FileLocator.GetFileStreamFromAssembly(currentDrumKitFolder + "Shaker 01.wav"))
+            .AddInstrument("Clap", "CP", FileLocator.GetFileStreamFromAssembly(currentDrumKitFolder + "Clap.wav"))
+            .AddInstrument("Cowbell", "CB", FileLocator.GetFileStreamFromAssembly(currentDrumKitFolder + "Cowbell 01.wav"))
+            .AddInstrument("Zap", "ZP", FileLocator.GetFileStreamFromAssembly(currentDrumKitFolder + "Zap 01.wav"));
         }
 
         public void OnRandomizeCommand()
         {
-            foreach (var sequencerLane in SequenceLanes)
-            {
-                foreach (var step in sequencerLane.SequenceSteps)
-                {
-                    step.On = random.NextDouble() > 0.5;
-                }
-            }
+            SimpleDrumSequencerService.Randomize();
         }
 
         public void OnStartCommand()
         {
-            IsRunning = true;
+            IsRunning = SimpleDrumSequencerService.Start().IsRunning;
         }
 
         public void OnStopCommand()
         {
-            IsRunning = false;
-        } 
+            IsRunning = SimpleDrumSequencerService.Stop().IsRunning;
+        }
 
-        public void OnPlaySoundCommand(SequenceLane sequenceLane)
+        public void OnPlaySoundCommand(SequencerLaneModel sequencerLane)
         {
-            LastPlayedInstrument = sequenceLane.Instrument;
-            AudioPlayer.Play();
+            LastPlayedInstrumentName = sequencerLane.InstrumentName;
+            LastPlayedInstrumentNameShort = sequencerLane.InstrumentNameShort;
+            sequencerLane.AudioPlayer.Play();
+        }
 
+        public void OnResetCommand()
+        {
+            SimpleDrumSequencerService.Reset();
         }
 
         public ICommand RandomizeCommand { get; }
         public ICommand StartCommand { get; }
         public ICommand StopCommand { get; }
         public ICommand PlaySoundCommand { get; }
+        public ICommand ResetCommand { get; }
     }
 }
-

@@ -18,23 +18,16 @@
         <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
             <StackLayout Orientation="Horizontal">
                 <Label Text="{Binding IsRunning, StringFormat='Simple Drum Sequencer (Running: {0:F2})'}" HorizontalTextAlignment="Center" TextColor="White" FontSize="18"/>
-                <Label Text="{Binding LastPlayedInstrument, StringFormat=', Last played instrument: {0}'}" HorizontalTextAlignment="Center" TextColor="White" FontSize="18" />
+                <Label Text="{Binding LastPlayedInstrumentName, StringFormat=', Last played instrument: {0}'}" HorizontalTextAlignment="Center" TextColor="White" FontSize="18" />
             </StackLayout>
         </Frame>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+        <StackLayout Orientation="Horizontal">
             <Button Padding="5" Margin="5,0,0,0" Grid.Row="0" Grid.Column="0" Text="Play" Command="{Binding StartCommand}"/>
             <Button Padding="5" Grid.Row="0" Grid.Column="1" Text="Stop" Command="{Binding StopCommand}"/>
             <Button Padding="5" Grid.Row="0" Grid.Column="2" Text="Randomize" Command="{Binding RandomizeCommand}"></Button>
-        </Grid>
-        <StackLayout BindableLayout.ItemsSource="{Binding SequenceLanes}">
+            <Button Padding="5" Grid.Row="0" Grid.Column="2" Text="Reset" Command="{Binding ResetCommand}"></Button>
+        </StackLayout>
+        <StackLayout BindableLayout.ItemsSource="{Binding SequencerLanes}">
             <BindableLayout.ItemTemplate>
                 <DataTemplate>
                     <Grid RowSpacing="0">
@@ -48,18 +41,18 @@
                         <Button 
                             Grid.Row="0" Grid.Column="0" 
                             Margin="5,0,0,0"
-                            Text="{Binding Instrument}"
+                            Text="{Binding InstrumentName}"
                             Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SimpleDrumSequencerViewModel}}, Path=PlaySoundCommand}"
                             CommandParameter="{Binding}"
                             />
                         <StackLayout 
                             Orientation="Horizontal"    
                             Grid.Row="0" Grid.Column="1" 
-                            BindableLayout.ItemsSource="{Binding SequenceSteps}"
+                            BindableLayout.ItemsSource="{Binding SequencerSteps}"
                             >
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <localcontrols:ToggleButton IsToggled="{Binding On}" WidthRequest="50">
+                                    <localcontrols:ToggleButton IsToggled="{Binding IsActive, Mode=TwoWay}" WidthRequest="50">
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroup Name="ToggleStates">
                                                 <VisualState Name="ToggledOff">
