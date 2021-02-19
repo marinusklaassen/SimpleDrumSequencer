@@ -56,7 +56,7 @@ namespace SimpleDrumSequencer.ViewModels
             ResetCommand = new Command(OnResetCommand);
             SimpleDrumSequencerService = simpleDrumSequencerService;
 
-            var currentDrumKitFolder = Assembly.GetCallingAssembly().GetName().Name + ".Audio.DrumKit.";
+            string currentDrumKitFolder = "SimpleDrumSequencer.Audio.DrumKit.";
 
             SequencerLanes = SimpleDrumSequencerService.SequencerLanes;
 
