@@ -1,8 +1,11 @@
-﻿using SimpleDrumSequencer.ViewModels.Base;
+﻿using Plugin.SimpleAudioPlayer;
+using SimpleDrumSequencer.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -54,6 +57,18 @@ namespace SimpleDrumSequencer.ViewModels
 
     public class SimpleDrumSequencerViewModel : ViewModelBase
     {
+        
+        Stream GetStreamFromFile(string filename)
+        {
+            var assembly = typeof(App).GetTypeInfo().Assembly;
+                       var stream = assembly.GetManifestResourceStream("SimpleDrumSequencer." + "Audio.DrumKit.Kick 01.wav");
+
+            return stream;
+        }
+
+        protected ISimpleAudioPlayer AudioPlayer = null;
+
+
         public Random random = new Random();
 
         protected List<string> Instruments = new List<string> { "Bass drum", "Snare drum", "Hihat", "Cymbal", "High tom", "Mid tom", "Low tom" };
@@ -80,6 +95,12 @@ namespace SimpleDrumSequencer.ViewModels
             StartCommand = new Command(OnStartCommand);
             StopCommand = new Command(OnStopCommand);
             PlaySoundCommand = new Command<SequenceLane>(OnPlaySoundCommand);
+
+
+            var stream = GetStreamFromFile("xxx.mp3");
+            AudioPlayer = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
+            AudioPlayer.Load(stream);
+
 
             foreach (var instrument in Instruments)
             {
@@ -111,11 +132,13 @@ namespace SimpleDrumSequencer.ViewModels
         public void OnStopCommand()
         {
             IsRunning = false;
-        }
+        } 
 
         public void OnPlaySoundCommand(SequenceLane sequenceLane)
         {
             LastPlayedInstrument = sequenceLane.Instrument;
+            AudioPlayer.Play();
+
         }
 
         public ICommand RandomizeCommand { get; }

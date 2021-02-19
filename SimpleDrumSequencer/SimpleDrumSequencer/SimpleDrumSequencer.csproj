@@ -15,15 +15,53 @@
     <PackageReference Include="Xamarin.CommunityToolkit" Version="1.0.2" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
+    <PackageReference Include="Xam.Plugin.SimpleAudioPlayer" Version="1.4.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Audio\" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Update="Views\SimpleDrumSequencerView.xaml.cs">
       <DependentUpon>SimpleDrumSequencerView.xaml</DependentUpon>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Audio\DrumKit\Clap.wav" />
+    <None Remove="Audio\DrumKit\Closed Hat 01.wav" />
+    <None Remove="Audio\DrumKit\Closed Hat 02.wav" />
+    <None Remove="Audio\DrumKit\Cowbell 01.wav" />
+    <None Remove="Audio\DrumKit\Cymbal 01.wav" />
+    <None Remove="Audio\DrumKit\Kick 01.wav" />
+    <None Remove="Audio\DrumKit\Kick 02.wav" />
+    <None Remove="Audio\DrumKit\Open Hat 01.wav" />
+    <None Remove="Audio\DrumKit\Shaker 01.wav" />
+    <None Remove="Audio\DrumKit\Snare 01.wav" />
+    <None Remove="Audio\DrumKit\Snare 02.wav" />
+    <None Remove="Audio\DrumKit\Tom 01.wav" />
+    <None Remove="Audio\DrumKit\Tom 02.wav" />
+    <None Remove="Audio\DrumKit\Tom 03.wav" />
+    <None Remove="Audio\DrumKit\Zap 01.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Audio\DrumKit\Clap.wav">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Audio\DrumKit\Closed Hat 01.wav" />
+    <EmbeddedResource Include="Audio\DrumKit\Closed Hat 02.wav" />
+    <EmbeddedResource Include="Audio\DrumKit\Cowbell 01.wav" />
+    <EmbeddedResource Include="Audio\DrumKit\Cymbal 01.wav" />
+    <EmbeddedResource Include="Audio\DrumKit\Kick 01.wav" />
+    <EmbeddedResource Include="Audio\DrumKit\Kick 02.wav" />
+    <EmbeddedResource Include="Audio\DrumKit\Open Hat 01.wav" />
+    <EmbeddedResource Include="Audio\DrumKit\Shaker 01.wav" />
+    <EmbeddedResource Include="Audio\DrumKit\Snare 01.wav" />
+    <EmbeddedResource Include="Audio\DrumKit\Snare 02.wav" />
+    <EmbeddedResource Include="Audio\DrumKit\Tom 01.wav" />
+    <EmbeddedResource Include="Audio\DrumKit\Tom 02.wav" />
+    <EmbeddedResource Include="Audio\DrumKit\Tom 03.wav" />
+    <EmbeddedResource Include="Audio\DrumKit\Zap 01.wav" />
   </ItemGroup>
 </Project>
