@@ -42,7 +42,7 @@
                             Grid.Row="0" Grid.Column="0" 
                             Margin="5,0,0,0"
                             Text="{Binding InstrumentName}"
-                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SimpleDrumSequencerViewModel}}, Path=PlaySoundCommand}"
+                            Command="{Binding DataContext.PlaySoundCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
                             CommandParameter="{Binding}"
                             />
                         <StackLayout 
@@ -62,7 +62,6 @@
                                                         <Setter Property="TextColor" Value="Color.Black" />
                                                     </VisualState.Setters>
                                                 </VisualState>
-
                                                 <VisualState Name="ToggledOn">
                                                     <VisualState.Setters>
                                                         <Setter Property="Text" Value=" On" />
