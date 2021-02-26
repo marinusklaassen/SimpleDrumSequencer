@@ -1,5 +1,6 @@
 ﻿using Plugin.SimpleAudioPlayer;
 using SimpleDrumSequencer.Models;
+using SimpleDrumSequencer.Utility;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,6 +17,8 @@ namespace SimpleDrumSequencer.Services
         public Random RandomValue = new Random();
 
         public int Position;
+
+        public event EventHandler<PositionChangedEventArgs> PositionChanged;
 
         public bool IsRunning { get; set; } 
         public Timer SequencerTimer = new Timer(126);
@@ -66,11 +69,15 @@ namespace SimpleDrumSequencer.Services
 
         private void OnTimedEvent(object source, ElapsedEventArgs e)
         {
+            Position %= 16;
+            PositionChanged.Invoke(this, new PositionChangedEventArgs { Position = Position });
+
             foreach (var sequencerLane in SequencerLanes)
             {
-                if (sequencerLane.SequencerSteps[Position % sequencerLane.NumberOfSteps].IsActive)
+                if (sequencerLane.SequencerSteps[Position].IsActive)
                     sequencerLane.AudioPlayer.Play();
             }
+
             Position++;
         }
 

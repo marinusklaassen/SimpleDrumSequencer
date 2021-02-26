@@ -25,6 +25,13 @@ namespace SimpleDrumSequencer.ViewModels
             set { SetProperty(ref isRunning, value); }
         }
 
+        int sequencerPosition = 0;
+        public int SequencerPosition
+        {
+            get { return sequencerPosition; }
+            set { SetProperty(ref sequencerPosition, value); }
+        }
+
         string lastPlayedInstrumentName = String.Empty;
         public string LastPlayedInstrumentName
         {
@@ -76,6 +83,14 @@ namespace SimpleDrumSequencer.ViewModels
             .AddInstrument("Clap", "CP", FileLocator.GetFileStreamFromAssembly(currentDrumKitFolder + "Clap.wav"))
             .AddInstrument("Cowbell", "CB", FileLocator.GetFileStreamFromAssembly(currentDrumKitFolder + "Cowbell 01.wav"))
             .AddInstrument("Zap", "ZP", FileLocator.GetFileStreamFromAssembly(currentDrumKitFolder + "Zap 01.wav"));
+
+            SimpleDrumSequencerService.PositionChanged += OnSequencerPositionChanged; 
+                
+        }
+
+        public void OnSequencerPositionChanged(object sender, Utility.PositionChangedEventArgs e)
+        {
+            SequencerPosition = e.Position;
         }
 
         public void OnRandomizeCommand()

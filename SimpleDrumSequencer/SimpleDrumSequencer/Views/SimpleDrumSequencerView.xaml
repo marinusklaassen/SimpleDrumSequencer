@@ -65,21 +65,32 @@
                             BindableLayout.ItemsSource="{Binding SequencerSteps}">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <localcontrols:ToggleButton IsToggled="{Binding IsActive, Mode=TwoWay}" HeightRequest="35" WidthRequest="35" >
+                                    <localcontrols:ToggleButton 
+                                        Text="-"
+                                        IsToggled="{Binding IsActive, Mode=TwoWay}" 
+                                        PositionStep="{Binding Position}"
+                                        PositionSequencer="{Binding Path=BindingContext.SequencerPosition, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                        HeightRequest="35" WidthRequest="35" >
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroup Name="ToggleStates">
-                                                <VisualState Name="ToggledOff">
+                                                <VisualState Name="ToggledOff_NotHit">
                                                     <VisualState.Setters>
-                                                        <Setter Property="Text" Value="-" />
-                                                        <Setter Property="BackgroundColor" Value="Color.Gray" />
-                                                        <Setter Property="TextColor" Value="Color.Black" />
+                                                        <Setter Property="BackgroundColor" Value="Color.DimGray" />
                                                     </VisualState.Setters>
                                                 </VisualState>
-                                                <VisualState Name="ToggledOn">
+                                                <VisualState Name="ToggledOff_GotHit">
                                                     <VisualState.Setters>
-                                                        <Setter Property="Text" Value="-" />
-                                                        <Setter Property="BackgroundColor" Value="Color.DarkOrange" />
-                                                        <Setter Property="TextColor" Value="Color.Black" />
+                                                        <Setter Property="BackgroundColor" Value="Color.LightGray" />
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                                <VisualState Name="ToggledOn_NotHit">
+                                                    <VisualState.Setters>
+                                                        <Setter Property="BackgroundColor" Value="Color.OrangeRed" />
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                                <VisualState Name="ToggledOn_GotHit">
+                                                    <VisualState.Setters>
+                                                        <Setter Property="BackgroundColor" Value="Color.Orange" />
                                                     </VisualState.Setters>
                                                 </VisualState>
                                             </VisualStateGroup>

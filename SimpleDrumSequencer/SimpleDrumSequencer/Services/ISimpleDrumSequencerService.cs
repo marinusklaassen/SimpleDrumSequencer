@@ -1,4 +1,6 @@
 ﻿using SimpleDrumSequencer.Models;
+using SimpleDrumSequencer.Utility;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 
@@ -8,6 +10,8 @@ namespace SimpleDrumSequencer.Services
     {
         ObservableCollection<SequencerLaneModel> SequencerLanes { get; set; }
         bool IsRunning { get; }
+
+        event EventHandler<PositionChangedEventArgs> PositionChanged;
 
         ISimpleDrumSequencerService AddInstrument(string instrumentName, string instrumentNameShort, Stream soundFileStream);
         ISimpleDrumSequencerService Randomize();
