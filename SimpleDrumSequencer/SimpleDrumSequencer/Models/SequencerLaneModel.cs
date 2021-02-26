@@ -34,7 +34,7 @@ namespace SimpleDrumSequencer.Models
             set
             {
                 SequencerSteps.Clear();
-                foreach (var position in Enumerable.Range(0, value))
+                for(int position = 0; position < value; position++)
                 {
                     SequencerSteps.Add(new SequencerStepModel { Position = position });
                 }
