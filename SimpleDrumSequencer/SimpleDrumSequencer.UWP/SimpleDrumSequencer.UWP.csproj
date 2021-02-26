@@ -130,7 +130,11 @@
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <Content Include="clear-solid.png" />
+    <Content Include="play-solid.png" />
     <Content Include="Properties\Default.rd.xml" />
+    <Content Include="random-solid.png" />
+    <Content Include="stop-solid.png" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

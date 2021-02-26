@@ -8,24 +8,39 @@
              >
 
     <ContentPage.Resources>
+        <Style x:Key="GroupSectionStyle" TargetType="ImageButton">
+            <Setter Property="BackgroundColor" Value="DarkGray" />
+            <Setter Property="Margin" Value="5,0,5,0"/>
+        </Style>
         <Style TargetType="localcontrols:ToggleButton">
             <Setter Property="VerticalOptions" Value="CenterAndExpand" />
             <Setter Property="HorizontalOptions" Value="Center" />
         </Style>
+        <Style x:Key="ControlPanelButtonStyle" TargetType="ImageButton">
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+            <Setter Property="WidthRequest" Value="80"/>
+            <Setter Property="HeightRequest" Value="80"/>
+            <Setter Property="BackgroundColor" Value="DeepSkyBlue"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+        <Style x:Key="VolumeSliderStyle" TargetType="Slider">
+            <Setter Property="MinimumTrackColor" Value="Black"/>
+            <Setter Property="Background" Value="DarkGray"/>
+        </Style>
     </ContentPage.Resources>
 
     <StackLayout>
-        <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
-            <StackLayout Orientation="Horizontal">
-                <Label Text="{Binding IsRunning, StringFormat='Simple Drum Sequencer (Running: {0:F2})'}" HorizontalTextAlignment="Center" TextColor="White" FontSize="18"/>
-                <Label Text="{Binding LastPlayedInstrumentName, StringFormat=', Last played instrument: {0}'}" HorizontalTextAlignment="Center" TextColor="White" FontSize="18" />
-            </StackLayout>
-        </Frame>
-        <StackLayout Orientation="Horizontal">
-            <Button Padding="5" Margin="5,0,0,0" Grid.Row="0" Grid.Column="0" Text="Play" Command="{Binding StartCommand}"/>
-            <Button Padding="5" Grid.Row="0" Grid.Column="1" Text="Stop" Command="{Binding StopCommand}"/>
-            <Button Padding="5" Grid.Row="0" Grid.Column="2" Text="Randomize" Command="{Binding RandomizeCommand}"></Button>
-            <Button Padding="5" Grid.Row="0" Grid.Column="2" Text="Reset" Command="{Binding ResetCommand}"></Button>
+
+        <StackLayout Style="{StaticResource GroupSectionStyle}" Orientation="Horizontal" >
+            <ImageButton Style="{StaticResource ControlPanelButtonStyle}" Source="play-solid.png"   Command="{Binding StartCommand}"/>
+            <ImageButton Style="{StaticResource ControlPanelButtonStyle}" Source="stop-solid.png"   Command="{Binding StopCommand}"/>
+            <ImageButton Style="{StaticResource ControlPanelButtonStyle}" Source="random-solid.png" Command="{Binding RandomizeCommand}"/>
+            <ImageButton Style="{StaticResource ControlPanelButtonStyle}" Source="clear-solid.png"  Command="{Binding ResetCommand}"/>
+            <Label VerticalOptions="CenterAndExpand" HorizontalOptions="End" Margin="10" Text="{Binding IsRunning, StringFormat='SDS-101 (Running:{0})'}" HorizontalTextAlignment="Center" FontFamily="Consolas" TextColor="Black" FontSize="Large"/>
+        </StackLayout>
+        <StackLayout Style="{StaticResource GroupSectionStyle}"  >
+            <Slider Style="{StaticResource VolumeSliderStyle}"/>
         </StackLayout>
         <StackLayout BindableLayout.ItemsSource="{Binding SequencerLanes}">
             <BindableLayout.ItemTemplate>
@@ -42,29 +57,27 @@
                             Grid.Row="0" Grid.Column="0" 
                             Margin="5,0,0,0"
                             Text="{Binding InstrumentName}"
-                            Command="{Binding DataContext.PlaySoundCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
-                            CommandParameter="{Binding}"
-                            />
+                            Command="{Binding Path=BindingContext.PlaySoundCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                            CommandParameter="{Binding}"/>
                         <StackLayout 
                             Orientation="Horizontal"    
                             Grid.Row="0" Grid.Column="1" 
-                            BindableLayout.ItemsSource="{Binding SequencerSteps}"
-                            >
+                            BindableLayout.ItemsSource="{Binding SequencerSteps}">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <localcontrols:ToggleButton IsToggled="{Binding IsActive, Mode=TwoWay}" WidthRequest="50">
+                                    <localcontrols:ToggleButton IsToggled="{Binding IsActive, Mode=TwoWay}" HeightRequest="35" WidthRequest="35" >
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroup Name="ToggleStates">
                                                 <VisualState Name="ToggledOff">
                                                     <VisualState.Setters>
-                                                        <Setter Property="Text" Value="Off" />
+                                                        <Setter Property="Text" Value="-" />
                                                         <Setter Property="BackgroundColor" Value="Color.Gray" />
                                                         <Setter Property="TextColor" Value="Color.Black" />
                                                     </VisualState.Setters>
                                                 </VisualState>
                                                 <VisualState Name="ToggledOn">
                                                     <VisualState.Setters>
-                                                        <Setter Property="Text" Value=" On" />
+                                                        <Setter Property="Text" Value="-" />
                                                         <Setter Property="BackgroundColor" Value="Color.DarkOrange" />
                                                         <Setter Property="TextColor" Value="Color.Black" />
                                                     </VisualState.Setters>
