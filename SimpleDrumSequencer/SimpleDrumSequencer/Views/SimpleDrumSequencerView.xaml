@@ -39,8 +39,8 @@
             <ImageButton Style="{StaticResource ControlPanelButtonStyle}" Source="clear-solid.png"  Command="{Binding ResetCommand}"/>
             <Label VerticalOptions="CenterAndExpand" HorizontalOptions="End" Margin="10" Text="{Binding IsRunning, StringFormat='SDS-101 (Running:{0})'}" HorizontalTextAlignment="Center" FontFamily="Consolas" TextColor="Black" FontSize="Large"/>
         </StackLayout>
-        <StackLayout Style="{StaticResource GroupSectionStyle}"  >
-            <Slider Style="{StaticResource VolumeSliderStyle}"/>
+        <StackLayout Style="{StaticResource GroupSectionStyle}">
+            <Slider Style="{StaticResource VolumeSliderStyle}" Value="{Binding Volume}"/>
         </StackLayout>
         <StackLayout BindableLayout.ItemsSource="{Binding SequencerLanes}">
             <BindableLayout.ItemTemplate>

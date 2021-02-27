@@ -25,6 +25,17 @@ namespace SimpleDrumSequencer.ViewModels
             set { SetProperty(ref isRunning, value); }
         }
 
+        double volume = 0.8;
+        public double Volume
+        {
+            get { return volume; }
+            set
+            {
+                SetProperty(ref volume, value);
+                OnVolumeChanged(volume);
+            }
+        }
+
         int sequencerPosition = 0;
         public int SequencerPosition
         {
@@ -61,6 +72,7 @@ namespace SimpleDrumSequencer.ViewModels
             StopCommand = new Command(OnStopCommand);
             PlaySoundCommand = new Command<SequencerLaneModel>(OnPlaySoundCommand);
             ResetCommand = new Command(OnResetCommand);
+
             SimpleDrumSequencerService = simpleDrumSequencerService;
 
             string currentDrumKitFolder = "SimpleDrumSequencer.Audio.DrumKit.";
@@ -84,8 +96,7 @@ namespace SimpleDrumSequencer.ViewModels
             .AddInstrument("Cowbell", "CB", FileLocator.GetFileStreamFromAssembly(currentDrumKitFolder + "Cowbell 01.wav"))
             .AddInstrument("Zap", "ZP", FileLocator.GetFileStreamFromAssembly(currentDrumKitFolder + "Zap 01.wav"));
 
-            SimpleDrumSequencerService.PositionChanged += OnSequencerPositionChanged; 
-                
+            SimpleDrumSequencerService.PositionChanged += OnSequencerPositionChanged;
         }
 
         public void OnSequencerPositionChanged(object sender, Utility.PositionChangedEventArgs e)
@@ -120,10 +131,16 @@ namespace SimpleDrumSequencer.ViewModels
             SimpleDrumSequencerService.Reset();
         }
 
+        public void OnVolumeChanged(double volume)
+        {
+            SimpleDrumSequencerService.SetVolume(volume);
+        }
+
         public ICommand RandomizeCommand { get; }
         public ICommand StartCommand { get; }
         public ICommand StopCommand { get; }
         public ICommand PlaySoundCommand { get; }
         public ICommand ResetCommand { get; }
+
     }
 }

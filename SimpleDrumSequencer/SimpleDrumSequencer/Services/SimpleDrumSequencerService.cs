@@ -2,10 +2,10 @@
 using SimpleDrumSequencer.Models;
 using SimpleDrumSequencer.Utility;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Text;
+using System.Linq;
+
 using System.Timers;
 
 namespace SimpleDrumSequencer.Services
@@ -76,6 +76,8 @@ namespace SimpleDrumSequencer.Services
             {
                 if (sequencerLane.SequencerSteps[Position].IsActive)
                     sequencerLane.AudioPlayer.Play();
+
+                
             }
 
             Position++;
@@ -93,6 +95,14 @@ namespace SimpleDrumSequencer.Services
             SequencerTimer.Stop();
             IsRunning = false;
             return this;
+        }
+
+        public void SetVolume(double volume)
+        {
+            foreach (var audioPlayer in SequencerLanes.Select(o => o.AudioPlayer).ToList())
+            {
+                audioPlayer.Volume = volume;
+            }
         }
     }
 }
