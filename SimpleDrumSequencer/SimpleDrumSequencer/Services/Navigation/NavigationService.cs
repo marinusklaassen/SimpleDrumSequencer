@@ -1,4 +1,5 @@
-﻿using SimpleDrumSequencer.Constracts.Navigation;
+﻿using SimpleDrumSequencer.Bootstrap;
+using SimpleDrumSequencer.Constracts.Navigation;
 using SimpleDrumSequencer.ViewModels.Base;
 using System;
 using System.Collections.Generic;
@@ -20,8 +21,8 @@ namespace SimpleDrumSequencer.Services.Navigation
 
 			var viewType = Type.GetType($"{viewModelType.FullName.Replace("Model", string.Empty)}, {viewModelType.GetTypeInfo().Assembly.FullName}");
 
-      		var page      = Activator.CreateInstance(viewType) as Page;
-			var viewModel = Activator.CreateInstance(viewModelType) as ViewModelBase;
+      		var page      = AppContainer.Resolve(viewType) as Page;
+			var viewModel = AppContainer.Resolve(viewModelType) as ViewModelBase;
 
 			page.BindingContext = viewModel;
 			

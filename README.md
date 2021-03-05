@@ -13,7 +13,6 @@ For now I got it running for UWP on Windows 10.
 Next up: 
   * More async event handlers and commands
   * Calling generic on load methods in the viewmodels
-  * IoC & DI 
   * Drumpad page, about pages & navigation
   * Gitflow branching strategy
   * Azure build pipelines (CI&CD) 

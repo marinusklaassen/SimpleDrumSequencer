@@ -38,11 +38,7 @@ namespace SimpleDrumSequencer.Bootstrap
         private static void LoadViewModels(ContainerBuilder builder)
         {
             builder.RegisterType<ViewModelBase>();
-            builder.RegisterType<SimpleDrumSequencerViewModel>()
-               .WithParameter(
-                new ResolvedParameter(
-                  (pi, ctx) => pi.ParameterType == typeof(ISimpleDrumSequencerService),
-                  (pi, ctx) => ctx.Resolve<ISimpleDrumSequencerService>()));
+            builder.RegisterType<SimpleDrumSequencerViewModel>();
         }
 
         private static void LoadViews(ContainerBuilder builder)

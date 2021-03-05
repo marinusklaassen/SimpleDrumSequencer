@@ -64,17 +64,16 @@ namespace SimpleDrumSequencer.ViewModels
             set { SetProperty(ref sequencerLanes, value); }
         }
 
-        public SimpleDrumSequencerViewModel()
+        public SimpleDrumSequencerViewModel(ISimpleDrumSequencerService simpleDrumSequencerService)
         {
-            ISimpleDrumSequencerService simpleDrumSequencerService = new SimpleDrumSequencerService(); /* TODO reformat to DI */
+            SimpleDrumSequencerService = simpleDrumSequencerService;
+
             RandomizeCommand = new Command(OnRandomizeCommand);
             StartCommand = new Command(OnStartCommand);
             StopCommand = new Command(OnStopCommand);
             PlaySoundCommand = new Command<SequencerLaneModel>(OnPlaySoundCommand);
             ResetCommand = new Command(OnResetCommand);
-
-            SimpleDrumSequencerService = simpleDrumSequencerService;
-
+            
             string currentDrumKitFolder = "SimpleDrumSequencer.Audio.DrumKit.";
 
             SequencerLanes = SimpleDrumSequencerService.SequencerLanes;
