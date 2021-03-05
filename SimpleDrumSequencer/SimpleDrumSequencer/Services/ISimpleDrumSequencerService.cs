@@ -18,6 +18,6 @@ namespace SimpleDrumSequencer.Services
         ISimpleDrumSequencerService Reset();
         ISimpleDrumSequencerService Start();
         ISimpleDrumSequencerService Stop();
-        void SetVolume(double volume);
+        ISimpleDrumSequencerService SetVolume(double volume);
     }
 }

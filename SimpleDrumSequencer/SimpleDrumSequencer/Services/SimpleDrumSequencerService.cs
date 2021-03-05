@@ -5,9 +5,8 @@ using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-
+using System.Threading.Tasks;
 using System.Timers;
-
 namespace SimpleDrumSequencer.Services
 {
     public class SimpleDrumSequencerService : ISimpleDrumSequencerService
@@ -15,7 +14,6 @@ namespace SimpleDrumSequencer.Services
         public ObservableCollection<SequencerLaneModel> SequencerLanes { get; set; } = new ObservableCollection<SequencerLaneModel>();
 
         public Random RandomValue = new Random();
-
         public int Position;
 
         public event EventHandler<PositionChangedEventArgs> PositionChanged;
@@ -70,16 +68,16 @@ namespace SimpleDrumSequencer.Services
         private void OnTimedEvent(object source, ElapsedEventArgs e)
         {
             Position %= 16;
-            PositionChanged.Invoke(this, new PositionChangedEventArgs { Position = Position });
-
             foreach (var sequencerLane in SequencerLanes)
             {
                 if (sequencerLane.SequencerSteps[Position].IsActive)
-                    sequencerLane.AudioPlayer.Play();
-
-                
+                    Task.Run(() => // Adding a Task.Run to call play audio actually minimizes gives a real differency by 5ms. 
+                    {
+                        sequencerLane.AudioPlayer.Play();
+                    });
             }
 
+            PositionChanged.Invoke(this, new PositionChangedEventArgs { Position = Position });
             Position++;
         }
 
@@ -97,12 +95,13 @@ namespace SimpleDrumSequencer.Services
             return this;
         }
 
-        public void SetVolume(double volume)
+        public ISimpleDrumSequencerService SetVolume(double volume)
         {
             foreach (var audioPlayer in SequencerLanes.Select(o => o.AudioPlayer).ToList())
             {
                 audioPlayer.Volume = volume;
             }
+            return this;
         }
     }
 }

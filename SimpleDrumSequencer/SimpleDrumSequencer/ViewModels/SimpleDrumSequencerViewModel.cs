@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -122,7 +123,7 @@ namespace SimpleDrumSequencer.ViewModels
         {
             LastPlayedInstrumentName = sequencerLane.InstrumentName;
             LastPlayedInstrumentNameShort = sequencerLane.InstrumentNameShort;
-            sequencerLane.AudioPlayer.Play();
+            Task.Run(() => { sequencerLane.AudioPlayer.Play(); });
         }
 
         public void OnResetCommand()
