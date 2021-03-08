@@ -1,12 +1,14 @@
 ﻿using Plugin.SimpleAudioPlayer;
 using SimpleDrumSequencer.Models;
+using SimpleDrumSequencer.Multimedia;
 using SimpleDrumSequencer.Utility;
 using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Timers;
+// using System.Timers;
 namespace SimpleDrumSequencer.Services
 {
     public class SimpleDrumSequencerService : ISimpleDrumSequencerService
@@ -19,11 +21,11 @@ namespace SimpleDrumSequencer.Services
         public event EventHandler<PositionChangedEventArgs> PositionChanged;
 
         public bool IsRunning { get; set; } 
-        public Timer SequencerTimer = new Timer(126);
+        public Timer SequencerTimer = new Timer { Period = 126, Resolution = 1 };
 
         public SimpleDrumSequencerService()
         {
-            SequencerTimer.Elapsed += OnTimedEvent;
+            SequencerTimer.Tick +=  new System.EventHandler(this.OnTimedEvent); 
         }
 
         public ISimpleDrumSequencerService Randomize()
@@ -65,8 +67,23 @@ namespace SimpleDrumSequencer.Services
             return this;
         }
 
-        private void OnTimedEvent(object source, ElapsedEventArgs e)
+        Stopwatch stopWatch = new Stopwatch();
+        int lowestInterval; 
+        int highestInterval;
+
+        private void OnTimedEvent(object sender, System.EventArgs e)
         {
+            stopWatch.Stop();
+            // Get the elapsed time as a TimeSpan value.
+            TimeSpan ts = stopWatch.Elapsed;
+
+            if (ts.Milliseconds < lowestInterval || lowestInterval == 0) lowestInterval = ts.Milliseconds;
+            if (ts.Milliseconds > highestInterval) highestInterval = ts.Milliseconds;
+
+            Debug.WriteLine("RunTime " + ts.Milliseconds.ToString());
+            Debug.WriteLine("Lowest " + lowestInterval.ToString());
+            Debug.WriteLine("Highest " + highestInterval.ToString());
+
             Position %= 16;
             foreach (var sequencerLane in SequencerLanes)
             {
@@ -79,6 +96,8 @@ namespace SimpleDrumSequencer.Services
 
             PositionChanged.Invoke(this, new PositionChangedEventArgs { Position = Position });
             Position++;
+            stopWatch.Reset();
+            stopWatch.Start();
         }
 
         public ISimpleDrumSequencerService Start()
