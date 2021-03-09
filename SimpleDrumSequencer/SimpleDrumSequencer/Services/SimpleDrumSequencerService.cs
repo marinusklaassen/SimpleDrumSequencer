@@ -1,4 +1,5 @@
-﻿using Plugin.SimpleAudioPlayer;
+﻿using HighPrecisionTimer;
+using Plugin.SimpleAudioPlayer;
 using SimpleDrumSequencer.Models;
 using SimpleDrumSequencer.Multimedia;
 using SimpleDrumSequencer.Utility;
@@ -8,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+
 // using System.Timers;
 namespace SimpleDrumSequencer.Services
 {
@@ -20,12 +22,28 @@ namespace SimpleDrumSequencer.Services
 
         public event EventHandler<PositionChangedEventArgs> PositionChanged;
 
-        public bool IsRunning { get; set; } 
+        public bool IsRunning { get; set; }
         public Timer SequencerTimer = new Timer { Period = 126, Resolution = 1 };
 
-        public SimpleDrumSequencerService()
+        public MultimediaTimer HighTimes = new HighPrecisionTimer.MultimediaTimer() { Interval = 126 };
+
+        public SimpleDrumSequencerService() // Seems to be a bit of queuing 
         {
-            SequencerTimer.Tick +=  new System.EventHandler(this.OnTimedEvent); 
+            // SequencerTimer.Tick +=  new System.EventHandler(this.OnTimedEvent); 
+            HighTimes.Elapsed += (o, e) =>
+            {
+                Parallel.ForEach(SequencerLanes, sequencerLane =>
+                {
+                    if (sequencerLane.SequencerSteps[Position].IsActive)
+                        Task.Run(() => // Adding a Task.Run to call play audio actually minimizes gives a real differency by 5ms. 
+                        {
+                            sequencerLane.AudioPlayer.Play();
+                        });
+                });
+
+                PositionChanged.Invoke(this, new PositionChangedEventArgs { Position = Position });
+                Position = (Position + 1) % 16;
+            };
         }
 
         public ISimpleDrumSequencerService Randomize()
@@ -68,11 +86,12 @@ namespace SimpleDrumSequencer.Services
         }
 
         Stopwatch stopWatch = new Stopwatch();
-        int lowestInterval; 
+        int lowestInterval;
         int highestInterval;
 
         private void OnTimedEvent(object sender, System.EventArgs e)
         {
+
             stopWatch.Stop();
             // Get the elapsed time as a TimeSpan value.
             TimeSpan ts = stopWatch.Elapsed;
@@ -102,14 +121,16 @@ namespace SimpleDrumSequencer.Services
 
         public ISimpleDrumSequencerService Start()
         {
-            SequencerTimer.Start();
-            IsRunning = true; 
+            HighTimes.Start();
+            // SequencerTimer.Start();
+            IsRunning = true;
             return this;
         }
 
         public ISimpleDrumSequencerService Stop()
         {
-            SequencerTimer.Stop();
+            HighTimes.Stop();
+            //   SequencerTimer.Stop();
             IsRunning = false;
             return this;
         }

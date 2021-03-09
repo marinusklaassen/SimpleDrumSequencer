@@ -12,6 +12,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using Xamarin.Essentials;
+using System.Diagnostics;
 
 namespace SimpleDrumSequencer.ViewModels
 {
@@ -79,6 +81,8 @@ namespace SimpleDrumSequencer.ViewModels
 
             SequencerLanes = SimpleDrumSequencerService.SequencerLanes;
 
+            var isMain = MainThread.IsMainThread;
+
             SimpleDrumSequencerService
             .AddInstrument("Bass Drum 1", "BD1", FileLocator.GetFileStreamFromAssembly(currentDrumKitFolder + "Kick 01.wav"))
             .AddInstrument("Bass Drum 2", "BD2", FileLocator.GetFileStreamFromAssembly(currentDrumKitFolder + "Kick 02.wav"))
@@ -98,11 +102,35 @@ namespace SimpleDrumSequencer.ViewModels
 
             SimpleDrumSequencerService.PositionChanged += OnSequencerPositionChanged;
         }
-
+        
+        
+            
         public void OnSequencerPositionChanged(object sender, Utility.PositionChangedEventArgs e)
         {
-            SequencerPosition = e.Position;
+            try
+            {
+                var isMain = MainThread.IsMainThread;
+
+            if (MainThread.IsMainThread) // 
+                SequencerPosition = e.Position;
+            else
+            {
+                MainThread.InvokeOnMainThreadAsync(() => {
+                    SequencerPosition = e.Position;
+                });
+            }
+
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+
+
+
         }
+
+
 
         public void OnRandomizeCommand()
         {
@@ -123,7 +151,7 @@ namespace SimpleDrumSequencer.ViewModels
         {
             LastPlayedInstrumentName = sequencerLane.InstrumentName;
             LastPlayedInstrumentNameShort = sequencerLane.InstrumentNameShort;
-            Task.Run(() => { sequencerLane.AudioPlayer.Play(); });
+            Task.Run(() => { sequencerLane.AudioPlayer.Play(); }); // Make this a sync.
         }
 
         public void OnResetCommand()
