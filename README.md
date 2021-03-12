@@ -19,6 +19,10 @@ Next up:
   * Android & IOS support 
   * Reformatting & reusability
 
-## Build Status
+## CI/CD Status
 
-[![Build Status](https://dev.azure.com/marinusklaassen0069/Xamarin%20Forms%20Cross-platform%20Apps/_apis/build/status/marinusklaassen.simpledrumsequencer?branchName=main)](https://dev.azure.com/marinusklaassen0069/Xamarin%20Forms%20Cross-platform%20Apps/_build/latest?definitionId=1&branchName=main)
+|Branch|Build Status|
+|------ |:--------- |
+|main   | [![](https://dev.azure.com/marinusklaassen0069/Xamarin%20Forms%20Cross-platform%20Apps/_apis/build/status/marinusklaassen.simpledrumsequencer?branchName=main)](https://dev.azure.com/marinusklaassen0069/Xamarin%20Forms%20Cross-platform%20Apps/_build/latest?definitionId=1&branchName=main) |
+|feature/azure-pipelines | [![](https://dev.azure.com/marinusklaassen0069/Xamarin%20Forms%20Cross-platform%20Apps/_apis/build/status/marinusklaassen.simpledrumsequencer?branchName=feature%2Fazure-pipelines)](https://dev.azure.com/marinusklaassen0069/Xamarin%20Forms%20Cross-platform%20Apps/_build/latest?definitionId=1&branchName=feature%2Fazure-pipelines) |
+
