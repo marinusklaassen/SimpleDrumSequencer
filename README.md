@@ -18,3 +18,7 @@ Next up:
   * Azure build pipelines (CI&CD) 
   * Android & IOS support 
   * Reformatting & reusability
+
+## Build Status
+
+[![Build Status](https://dev.azure.com/marinusklaassen0069/Xamarin%20Forms%20Cross-platform%20Apps/_apis/build/status/marinusklaassen.simpledrumsequencer?branchName=main)](https://dev.azure.com/marinusklaassen0069/Xamarin%20Forms%20Cross-platform%20Apps/_build/latest?definitionId=1&branchName=main)
