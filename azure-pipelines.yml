@@ -17,7 +17,7 @@ variables:
   buildPlatform: 'x86|x64|ARM'
   buildConfiguration: 'Release'
   appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
-  myDraftReleaseVersion: 'v1.1'
+  myDraftReleaseVersion: 'v0.0.0'
 
 steps:
 
@@ -52,5 +52,6 @@ steps:
     gitHubConnection: 'marinusklaassen'
     repositoryName: 'marinusklaassen/simpledrumsequencer'
     action: edit
-    tag: $(draftReleaseTag)
-    assets: $(appxPackageDir)
+    tag: $(myDraftReleaseVersion)
+    assets: '$(appxPackageDir)'
+      
