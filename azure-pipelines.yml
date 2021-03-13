@@ -26,6 +26,7 @@ steps:
   inputs:
     additionalArguments: '/updateprojectfiles /verbosity Diagnostic'
     useConfigFile: true
+    configFilePath: 'GitVersion.yml'
 
 - script: echo current version is $(GitVersion.SemVer)
   displayName: 'Display calculated version'
