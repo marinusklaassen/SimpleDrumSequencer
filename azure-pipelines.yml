@@ -25,6 +25,7 @@ steps:
   displayName: 'Execute GitVersion to calculate SemVer'
   inputs:
     additionalArguments: '/updateprojectfiles /verbosity Diagnostic'
+    useConfigFile: true
 
 - script: echo current version is $(GitVersion.SemVer)
   displayName: 'Display calculated version'
