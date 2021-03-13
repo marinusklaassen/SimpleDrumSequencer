@@ -31,9 +31,6 @@ steps:
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
-- task: gitversion/execute@0
-  inputs:
-
 - task: VSBuild@1
   inputs:
     platform: 'x86'
