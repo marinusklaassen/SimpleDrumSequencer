@@ -16,23 +16,23 @@ variables:
   buildConfiguration: 'Release'
   appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
 
-
-
 steps:
-  - task: gitversion/setup@0
-    displayName: 'Install GitTools'
-    inputs:
+- task: gitversion/setup@0
+  displayName: 'Install GitTools'
+  inputs:
     versionSpec: '5.3.x'
-  - task: gitversion/execute@0
-    displayName: 'Calculate SemVer'
-  - script: echo current version is $(GitVersion.SemVer)
-    displayName: 'Display calculated version'
+- task: gitversion/execute@0
+  displayName: 'Calculate SemVer'
+- script: echo current version is $(GitVersion.SemVer)
+  displayName: 'Display calculated version'
 
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
+- task: gitversion/execute@0
+  inputs:
 
 - task: VSBuild@1
   inputs:
