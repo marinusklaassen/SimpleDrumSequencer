@@ -3,10 +3,12 @@
 # Add steps that test and distribute an app, save build artifacts, and more:
 # https://aka.ms/yaml
 # https://www.wagner-dev.com/azure-pipelines-automatic-app-versioning.html
+# name: $(MajorVersion).$(MinorVersion).$(date:yy)$(DayOfYear)$(rev:.r)
+
+
 
 trigger:
 - main
-name: $(MajorVersion).$(MinorVersion).$(date:yy)$(DayOfYear)$(rev:.r)
 pool:
   vmImage: 'windows-latest'
 
@@ -17,19 +19,7 @@ variables:
   appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
 
 steps:
-- task: gitversion/setup@0
-  displayName: 'Install and setup GitTools'
-  inputs:
-    versionSpec: '5.3.x'
-- task: gitversion/execute@0
-  displayName: 'Execute GitVersion to calculate SemVer'
-  inputs:
-    additionalArguments: '/updateprojectfiles /verbosity Diagnostic'
-    useConfigFile: true
-    configFilePath: 'GitVersion.yml'
 
-- script: echo current version is $(GitVersion.SemVer)
-  displayName: 'Display calculated version'
 
 - task: NuGetToolInstaller@1
 
