@@ -2,6 +2,7 @@
 # Build a Universal Windows Platform project using Visual Studio.
 # Add steps that test and distribute an app, save build artifacts, and more:
 # https://aka.ms/yaml
+# https://www.wagner-dev.com/azure-pipelines-automatic-app-versioning.html
 
 trigger:
 - main
@@ -45,3 +46,4 @@ steps:
     PathtoPublish: '$(appxPackageDir)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
+
