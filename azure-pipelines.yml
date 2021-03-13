@@ -18,10 +18,14 @@ variables:
 
 
 steps:
-
-- task: gitversion/setup@0
-  inputs:
-    versionSpec: 'FullSemVer'
+  - task: gitversion/setup@0
+    displayName: 'Install GitTools'
+    inputs:
+    versionSpec: '5.3.x'
+  - task: gitversion/execute@0
+    displayName: 'Calculate SemVer'
+  - script: echo current version is $(GitVersion.SemVer)
+    displayName: 'Display calculated version'
 
 - task: NuGetToolInstaller@1
 
