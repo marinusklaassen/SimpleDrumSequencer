@@ -5,7 +5,7 @@
 
 trigger:
 - main
-
+name: $(MajorVersion).$(MinorVersion).$(date:yy)$(DayOfYear)$(rev:.r)
 pool:
   vmImage: 'windows-latest'
 
@@ -15,7 +15,14 @@ variables:
   buildConfiguration: 'Release'
   appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
 
+
+
 steps:
+
+- task: gitversion/setup@0
+  inputs:
+    versionSpec: 'FullSemVer'
+
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
