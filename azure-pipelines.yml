@@ -44,6 +44,8 @@ steps:
   inputs:
     PathtoPublish: '$(appxPackageDir)'
 
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/utility/github-release?view=azure-devops&viewFallbackFrom=vsts
+
 - task: GitHubRelease@0
   displayName: 'Edit GitHub Release'
   inputs: 
