@@ -18,11 +18,14 @@ variables:
 
 steps:
 - task: gitversion/setup@0
-  displayName: 'Install GitTools'
+  displayName: 'Install and setup GitTools'
   inputs:
     versionSpec: '5.3.x'
 - task: gitversion/execute@0
-  displayName: 'Calculate SemVer'
+  displayName: 'Execute GitVersion to calculate SemVer'
+  inputs:
+    additionalArguments: '/updateprojectfiles /verbosity Diagnostic'
+
 - script: echo current version is $(GitVersion.SemVer)
   displayName: 'Display calculated version'
 
