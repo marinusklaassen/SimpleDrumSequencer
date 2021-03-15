@@ -10,11 +10,12 @@ For now I got it running for UWP on Windows 10.
 
 ![Alt text](SDS-101-Screenshot.png?raw=true "SDS-101 (screenshot)")
 
+Currenlty working on: 
+* Azure build pipelines (CI&CD), An UWP executable or installer.
+
 Next up: 
   * More async event handlers and commands
   * Calling generic on load methods in the viewmodels
   * Drumpad page, about pages & navigation
-  * Gitflow branching strategy
-  * Azure build pipelines (CI&CD) 
-  * Android & IOS support 
+  * Android & (maybe IOS support)
   * Reformatting & reusability
