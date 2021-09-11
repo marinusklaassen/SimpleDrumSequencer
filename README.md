@@ -10,14 +10,8 @@ For now I got it running for UWP on Windows 10.
 
 ![Alt text](SDS-101-Screenshot.png?raw=true "SDS-101 (screenshot)")
 
-Next up: 
-  * More async event handlers and commands
-  * Calling generic on load methods in the viewmodels
-  * Drumpad page, about pages & navigation
-  * Gitflow branching strategy
-  * Azure build pipelines (CI&CD) 
-  * Android & IOS support 
-  * Reformatting & reusability
+# Status 
+The timing of recurring ticks is very problematic. I measured large time differences of around 15 ms. This means that another implementation (audio rate) is needed. Next experimentation will be with the JUCE framework without Xamarin or C#. 
 
 ## CI/CD Status
 
